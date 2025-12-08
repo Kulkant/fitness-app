@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext.jsx";
-import API from "../services/api.js";
-import AddWorkout from "./AddWorkout.jsx";
-import WorkoutList from "./WorkoutList.jsx";
-import AddMeal from "./AddMeal.jsx";
-import MealList from "./MealList.jsx";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CaloriesChart from "./CaloriesChart.jsx";
-import WorkoutFrequencyChart from "./WorkoutFrequencyChart.jsx";
-import {
-  FaUser,
-  FaFire,
-  FaUtensils,
-  FaChartBar,
-  FaDumbbell,
-  FaCalendarAlt,
-} from "react-icons/fa";
-import "./dashboard.css";
-import NutritionChart from "./NutritionChart.jsx";
+import { useAuth } from "../context/AuthContext";
+import API from "../services/api";
+
+// Components
+import AddWorkout from "./AddWorkout";
+import WorkoutList from "./WorkoutList";
+import AddMeal from "./AddMeal";
+import MealList from "./MealList";
+import CaloriesChart from "./CaloriesChart";
+import WorkoutFrequencyChart from "./WorkoutFrequencyChart";
+import NutritionChart from "./NutritionChart";
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [workouts, setWorkouts] = useState([]);
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -34,185 +26,294 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [workoutRes, mealRes] = await Promise.all([
+      const [workoutsRes, mealsRes] = await Promise.all([
         API.get("/workouts"),
         API.get("/meals"),
       ]);
-      setWorkouts(workoutRes.data);
-      setMeals(mealRes.data);
+      setWorkouts(workoutsRes.data);
+      setMeals(mealsRes.data);
     } catch (error) {
-      console.log(`Error fetching data :`, error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+  };
+
+  if (loading)
     return (
-      <div className="loadingContainer">
-        <div className="spinner"></div>
-        <p className="loadingText">Loading your fitness dashboard...</p>
+      <div style={{ padding: "40px", textAlign: "center" }}>
+        Loading your fitness data...
       </div>
     );
-  }
-
-  const handleWorkoutAdded = () => {
-    setRefresh(!refresh);
-    fetchData();
-  };
-
-  const handleMealAdded = () => {
-    setRefresh(!refresh);
-    fetchData();
-  };
-
-  const totalCalories = meals.reduce((sum, meal) => sum + meal.calories, 0);
-  const caloriePercentage = Math.min((totalCalories / 2500) * 100, 100);
-  const getCalorieBarColor = () => {
-    if (totalCalories > 2000) return "#ef4444";
-    if (totalCalories > 1500) return "#f59e0b";
-    return "#10b981";
-  };
 
   return (
-    <div className="dashboardContainer">
+    <div style={{ padding: "20px", maxWidth: "1400px", margin: "0 auto" }}>
       {/* Header */}
-      <header className="header">
-        <div className="headerLeft">
-          <h1 className="greeting">Welcome back, {user?.name}!</h1>
-          <p className="date">
-            <FaCalendarAlt style={{ marginRight: 8 }} />
-            {new Date().toLocaleDateString("en-US", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "30px",
+        }}
+      >
+        <div>
+          <h1 style={{ margin: 0 }}>Welcome back, {user?.name}!</h1>
+          <p style={{ margin: "5px 0 0 0", color: "#666" }}>
+            Track your fitness journey • {workouts.length} workouts •{" "}
+            {meals.length} meals logged
           </p>
         </div>
-        <button onClick={() => navigate(`/profile`)} className="profileButton">
-          <FaUser style={{ marginRight: 8 }} />
-          View Profile
-        </button>
-      </header>
-
-      {/* Stats Cards */}
-      <div className="statsContainer">
-        <div className="statCard">
-          <div className="statIconContainer">
-            <FaDumbbell className="statIcon" />
-          </div>
-          <div className="statContent">
-            <h3 className="statNumber">{workouts.length}</h3>
-            <p className="statLabel">Total Workouts</p>
-          </div>
+        <div style={{ display: "flex", gap: "15px" }}>
+          <button
+            onClick={() => navigate("/profile")}
+            style={{
+              padding: "10px 20px",
+              background: "#4CAF50",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "500",
+            }}
+          >
+            Edit Profile
+          </button>
+          <button
+            onClick={() => {
+              /* Logout function here */
+            }}
+            style={{
+              padding: "10px 20px",
+              background: "#f5f5f5",
+              color: "#333",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </button>
         </div>
+      </div>
 
-        <div className="statCard">
-          <div className="statIconContainer">
-            <FaUtensils className="statIcon" />
-          </div>
-          <div className="statContent">
-            <h3 className="statNumber">{meals.length}</h3>
-            <p className="statLabel">Total Meals</p>
-          </div>
+      {/* Quick Stats */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "15px",
+          marginBottom: "30px",
+        }}
+      >
+        <div
+          style={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+            padding: "20px",
+            borderRadius: "12px",
+          }}
+        >
+          <h3 style={{ margin: "0 0 10px 0" }}>Total Workouts</h3>
+          <p style={{ fontSize: "32px", margin: 0, fontWeight: "bold" }}>
+            {workouts.length}
+          </p>
         </div>
-
-        <div className="statCard">
-          <div className="statIconContainer">
-            <FaFire className="statIcon" />
-          </div>
-          <div className="statContent">
-            <h3 className="statNumber">{totalCalories}</h3>
-            <p className="statLabel">Total Calories</p>
-          </div>
+        <div
+          style={{
+            background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+            color: "white",
+            padding: "20px",
+            borderRadius: "12px",
+          }}
+        >
+          <h3 style={{ margin: "0 0 10px 0" }}>Total Meals</h3>
+          <p style={{ fontSize: "32px", margin: 0, fontWeight: "bold" }}>
+            {meals.length}
+          </p>
         </div>
+        <div
+          style={{
+            background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+            color: "white",
+            padding: "20px",
+            borderRadius: "12px",
+          }}
+        >
+          <h3 style={{ margin: "0 0 10px 0" }}>Calories Today</h3>
+          <p style={{ fontSize: "32px", margin: 0, fontWeight: "bold" }}>
+            {meals
+              .filter((m) => {
+                const today = new Date().toDateString();
+                return new Date(m.date).toDateString() === today;
+              })
+              .reduce((sum, meal) => sum + meal.calories, 0)}
+          </p>
+        </div>
+        <div
+          style={{
+            background: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+            color: "white",
+            padding: "20px",
+            borderRadius: "12px",
+          }}
+        >
+          <h3 style={{ margin: "0 0 10px 0" }}>Your Role</h3>
+          <p
+            style={{
+              fontSize: "32px",
+              margin: 0,
+              fontWeight: "bold",
+              textTransform: "capitalize",
+            }}
+          >
+            {user?.role}
+          </p>
+        </div>
+      </div>
 
-        <div className="statCard">
-          <div className="statIconContainer">
-            <FaChartBar className="statIcon" />
+      {/* Analytics Section */}
+      <div style={{ marginTop: "40px" }}>
+        <h2>Your Analytics</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "25px",
+            marginTop: "20px",
+          }}
+        >
+          {/* Calories Chart */}
+          <div
+            style={{
+              background: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+              border: "1px solid #eaeaea",
+            }}
+          >
+            <CaloriesChart workouts={workouts} />
           </div>
-          <div className="statContent">
-            <h3 className="statNumber">
-              {meals.length > 0 ? Math.round(totalCalories / meals.length) : 0}
-            </h3>
-            <p className="statLabel">Avg. per Meal</p>
+
+          {/* Workout Frequency */}
+          <div
+            style={{
+              background: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+              border: "1px solid #eaeaea",
+            }}
+          >
+            <WorkoutFrequencyChart workouts={workouts} />
+          </div>
+
+          {/* Nutrition Chart */}
+          <div
+            style={{
+              background: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+              border: "1px solid #eaeaea",
+            }}
+          >
+            <NutritionChart meals={meals} />
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="contentGrid">
-        {/* Left Column */}
-        <div className="leftColumn">
-          <div className="sectionCard">
-            <div className="sectionHeader">
-              <FaDumbbell className="sectionIcon" />
-              <h2 className="sectionTitle">Recent Workouts</h2>
-            </div>
-            <WorkoutList workouts={workouts} onWorkoutDeleted={fetchData} />
+      {/* Workout & Meal Logging */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+          gap: "30px",
+          marginTop: "40px",
+        }}
+      >
+        {/* Left Column - Workouts */}
+        <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "15px",
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Workouts</h2>
+            <button
+              onClick={() => navigate("/add-workout")}
+              style={{
+                padding: "8px 16px",
+                background: "#2196F3",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              + Add New
+            </button>
           </div>
-
-          <div className="sectionCard">
-            <div className="sectionHeader">
-              <FaUtensils className="sectionIcon" />
-              <h2 className="sectionTitle">Recent Meals</h2>
-            </div>
-            <MealList meals={meals} onMealDeleted={fetchData} />
+          <AddWorkout onWorkoutAdded={handleRefresh} />
+          <div style={{ marginTop: "20px" }}>
+            <WorkoutList workouts={workouts} onWorkoutDeleted={handleRefresh} />
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="rightColumn">
-          {/* Quick Actions */}
-          <div className="actionsCard">
-            <h2 className="actionsTitle">Quick Actions</h2>
-            <div className="actionsGrid">
-              <AddWorkout onWorkoutAdded={handleWorkoutAdded} />
-              <AddMeal onMealAdded={handleMealAdded} />
-            </div>
+        {/* Right Column - Meals */}
+        <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "15px",
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Meals</h2>
+            <button
+              onClick={() => navigate("/add-meal")}
+              style={{
+                padding: "8px 16px",
+                background: "#FF9800",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              + Add New
+            </button>
           </div>
-
-          {/* Summary Card */}
-          <div className="summaryCard">
-            <h2 className="summaryTitle">Today's Summary</h2>
-            <div className="summaryStats">
-              <div className="summaryItem">
-                <div className="summaryNumber">{workouts.length}</div>
-                <div className="summaryLabel">Workouts</div>
-              </div>
-              <div className="summaryItem">
-                <div className="summaryNumber">{meals.length}</div>
-                <div className="summaryLabel">Meals</div>
-              </div>
-              <div className="summaryItem">
-                <div className="summaryNumber">{totalCalories}</div>
-                <div className="summaryLabel">Calories</div>
-              </div>
-            </div>
-
-            {totalCalories > 0 && (
-              <div>
-                <div className="calorieBar">
-                  <div
-                    className="calorieFill"
-                    style={{
-                      width: `${caloriePercentage}%`,
-                      backgroundColor: getCalorieBarColor(),
-                    }}
-                  />
-                </div>
-                <div className="calorieText">
-                  {totalCalories} / 2500 recommended daily calories
-                </div>
-              </div>
-            )}
+          <AddMeal onMealAdded={handleRefresh} />
+          <div style={{ marginTop: "20px" }}>
+            <MealList meals={meals} onMealDeleted={handleRefresh} />
           </div>
         </div>
       </div>
-      <CaloriesChart workouts={workouts} />
-      <WorkoutFrequencyChart workouts={workouts} />
-      <NutritionChart meals={meals} />
+
+      {/* Footer */}
+      <div
+        style={{
+          marginTop: "50px",
+          padding: "20px",
+          textAlign: "center",
+          color: "#888",
+          borderTop: "1px solid #eee",
+        }}
+      >
+        <p>
+          Fitness Tracker • Built with MERN Stack • {new Date().getFullYear()}
+        </p>
+      </div>
     </div>
   );
 };
