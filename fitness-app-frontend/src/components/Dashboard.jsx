@@ -17,6 +17,7 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import "./dashboard.css";
+import NutritionChart from "./NutritionChart.jsx";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -211,6 +212,7 @@ const Dashboard = () => {
       </div>
       <CaloriesChart workouts={workouts} />
       <WorkoutFrequencyChart workouts={workouts} />
+      <NutritionChart meals={meals} />
     </div>
   );
 };
