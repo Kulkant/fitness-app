@@ -3,7 +3,7 @@ import axios from "axios";
 const API = axios.create({
   baseURL:
     process.env.NODE_ENV === `production`
-      ? `https://your-backend.onrender.com/api`
+      ? ` https://fitness-app-l3e9.onrender.com/api`
       : `http://localhost:5000/api`,
 });
 
