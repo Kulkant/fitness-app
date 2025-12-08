@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard.jsx";
 import EditWorkout from "./components/EditWorkout.jsx";
 import EditMeal from "./components/EditMeal.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
+import "./App.css";
 
 const App = () => {
   return (

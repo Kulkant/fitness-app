@@ -1,42 +1,65 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+/* Mobile Responsive */
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
   }
-  to {
-    transform: rotate(360deg);
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    padding: 10px 15px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .header-buttons {
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .workout-meal-grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+
+  .chart-container {
+    height: 250px !important;
+    min-height: 250px !important;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Very small phones */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
   }
-}
 
-.card {
-  padding: 2em;
-}
+  .header-buttons button {
+    width: 100%;
+  }
 
-.read-the-docs {
-  color: #888;
+  .stats-grid h3 {
+    font-size: 0.9rem !important;
+  }
+
+  .stats-grid p {
+    font-size: 1.5rem !important;
+  }
 }

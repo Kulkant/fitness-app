@@ -51,7 +51,15 @@ const Dashboard = () => {
     );
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1400px", margin: "0 auto" }}>
+    <div
+      className="dashboard-container"
+      style={{
+        padding: "15px",
+        maxWidth: "100%",
+        margin: "0 auto",
+        overflowX: "hidden",
+      }}
+    >
       {/* Header */}
       <div
         style={{
@@ -68,7 +76,10 @@ const Dashboard = () => {
             {meals.length} meals logged
           </p>
         </div>
-        <div style={{ display: "flex", gap: "15px" }}>
+        <div
+          style={{ display: "flex", gap: "15px" }}
+          className="header-buttons"
+        >
           <button
             onClick={() => navigate("/profile")}
             style={{
@@ -106,9 +117,10 @@ const Dashboard = () => {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "15px",
+          gap: "10px",
           marginBottom: "30px",
         }}
+        className="stats-grid"
       >
         <div
           style={{
@@ -186,6 +198,7 @@ const Dashboard = () => {
             gap: "25px",
             marginTop: "20px",
           }}
+          className="charts-grid"
         >
           {/* Calories Chart */}
           <div
@@ -195,7 +208,13 @@ const Dashboard = () => {
               borderRadius: "12px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
               border: "1px solid #eaeaea",
+              position: "relative",
+              height: "300px",
+              width: "100%",
+              maxWidth: "100%",
+              overflow: "hidden",
             }}
+            className="chart-container"
           >
             <CaloriesChart workouts={workouts} />
           </div>
@@ -208,7 +227,13 @@ const Dashboard = () => {
               borderRadius: "12px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
               border: "1px solid #eaeaea",
+              position: "relative",
+              height: "300px",
+              width: "100%",
+              maxWidth: "100%",
+              overflow: "hidden",
             }}
+            className="chart-container"
           >
             <WorkoutFrequencyChart workouts={workouts} />
           </div>
@@ -221,7 +246,13 @@ const Dashboard = () => {
               borderRadius: "12px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
               border: "1px solid #eaeaea",
+              position: "relative",
+              height: "300px",
+              width: "100%",
+              maxWidth: "100%",
+              overflow: "hidden",
             }}
+            className="chart-container"
           >
             <NutritionChart meals={meals} />
           </div>
@@ -236,6 +267,7 @@ const Dashboard = () => {
           gap: "30px",
           marginTop: "40px",
         }}
+        className="workout-meal-grid"
       >
         {/* Left Column - Workouts */}
         <div>
