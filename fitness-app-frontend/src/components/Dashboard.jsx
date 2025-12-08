@@ -85,7 +85,7 @@ const Dashboard = () => {
           </button>
           <button
             onClick={() => {
-              /* Logout function here */
+              navigate(`/login`);
             }}
             style={{
               padding: "10px 20px",
