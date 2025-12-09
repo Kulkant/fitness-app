@@ -27,7 +27,6 @@ const AddWorkout = ({ onWorkoutAdded }) => {
   return (
     <div
       style={{
-        padding: "20px",
         border: "1px solid #ccc",
         borderRadius: "8px",
         maxWidth: "100%",
