@@ -204,7 +204,7 @@ const Dashboard = () => {
           <div
             style={{
               background: "white",
-              padding: "20px",
+              padding: "15px",
               borderRadius: "12px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
               border: "1px solid #eaeaea",
@@ -213,6 +213,8 @@ const Dashboard = () => {
               width: "100%",
               maxWidth: "100%",
               overflow: "hidden",
+              margin: "0 auto",
+              boxSizing: "border-box",
             }}
             className="chart-container"
           >
@@ -232,6 +234,8 @@ const Dashboard = () => {
               width: "100%",
               maxWidth: "100%",
               overflow: "hidden",
+              margin: "0 auto",
+              boxSizing: "border-box",
             }}
             className="chart-container"
           >
@@ -251,6 +255,8 @@ const Dashboard = () => {
               width: "100%",
               maxWidth: "100%",
               overflow: "hidden",
+              margin: "0 auto",
+              boxSizing: "border-box",
             }}
             className="chart-container"
           >

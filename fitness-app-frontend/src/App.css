@@ -63,3 +63,17 @@
     font-size: 1.5rem !important;
   }
 }
+
+* {
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .chart-container,
+  .form-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

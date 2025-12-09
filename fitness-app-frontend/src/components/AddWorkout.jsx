@@ -26,7 +26,15 @@ const AddWorkout = ({ onWorkoutAdded }) => {
   };
   return (
     <div
-      style={{ padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}
+      style={{
+        padding: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        maxWidth: "100%",
+        padding: "15px",
+        margin: "0 auto",
+        boxSizing: "border-box",
+      }}
     >
       <h3>Log New Workout</h3>
       <form onSubmit={handleSubmit}>
