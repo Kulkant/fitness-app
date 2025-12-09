@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const Register = () => {
   });
   const { register, loading } = useAuth();
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,6 +24,9 @@ const Register = () => {
     try {
       await register(formData);
       alert(`Registeration successfull!`);
+      setTimeout(() => {
+        navigate(`/dashboard`);
+      }, 1000);
     } catch (error) {
       alert(error.message || `Registeration failed`);
     }
